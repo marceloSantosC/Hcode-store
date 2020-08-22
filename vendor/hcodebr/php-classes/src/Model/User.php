@@ -1,7 +1,7 @@
 <?php
+
 namespace Hcode\Model;
 
-use Exception;
 use \Hcode\DB\Sql;
 use Hcode\Mailer;
 use \Hcode\Model;

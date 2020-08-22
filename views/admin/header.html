@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Starter</title>
+  <title>AdminLTE 2 | Start</title>
   <base href="/admin">
 
   <!-- Tell the browser to be responsive to screen width -->
@@ -260,8 +260,9 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
         <li><a href="/admin/users"><i class="fa fa-users"></i> <span>Usuários</span></a></li>
         <li><a href="/admin/categories"><i class="fa fa-link"></i> <span>Categorias</span></a></li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
+        <li><a href="/admin/products"><i class="fa fa-link"></i> <span>Produtos</span></a></li>
+        <!-- <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>ads</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -271,8 +272,7 @@ desired effect
             <li><a href="#">Link in level 2</a></li>
           </ul>
         </li>
-      </ul>
-      <!-- /.sidebar-menu -->
+      </ul> -->
     </section>
     <!-- /.sidebar -->
   </aside>
