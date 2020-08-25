@@ -51,6 +51,24 @@ class Product extends Model{
         $this->setData($result[0]);
     }
 
+    public function getFromURL($desurl){
+        $sql = new Sql();
+        $rows = $sql->select("SELECT * FROM tb_products WHERE desurl = :desurl", [
+            ":desurl"=>$desurl
+        ]);
+
+        $this->setData($rows[0]);
+    }
+
+    public function getCategories(){
+        $sql = new Sql();
+        return $result = $sql->select("SELECT * FROM tb_categories a INNER JOIN
+            tb_productscategories b ON a.idcategory = b.idcategory WHERE 
+            b.idproduct = :idproduct;", [
+                ":idproduct"=>$this->getidproduct()
+            ]);
+    }
+
     public function delete(){
         $sql = new Sql();
         
