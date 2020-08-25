@@ -19,10 +19,22 @@ $app->get('/categories/:idcategory', function($idcategory){
 	$category = new Category();
 	$category->get((int)$idcategory);
 
+	$currentPage = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
+	$pagination = $category->getProductsPage($currentPage);
+
+	$pages = [];
+	for($i = 1; $i <= $pagination['pages']; $i++) {
+		array_push($pages, [
+			'link'=>"/categories/$idcategory?page=$i",
+			'page'=>$i
+		]);
+	}
+
 	$page = new Page();	
 	$page->setTpl("category", [
 		"category"=>$category->getValues(),
-		"products"=>Product::checklist($category->getProducts())
+		"products"=>$pagination['data'],
+		"pages"=>$pages
 	]);
 
 
