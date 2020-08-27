@@ -11,52 +11,73 @@ class User extends Model{
     const KEY = 'ALYbhXPbrQPMscfc';
     const KEY_IV = 'qAtdP3CX9q9WGykT';
 
-    public static function login($login, $password){
+    public static function login($login, $password)
+    {
         $sql = new Sql();
         $result = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
             ":LOGIN"=>$login
         ));
 
-        if(count($result) === 0) {
+        if (count($result) === 0) {
             throw new \Exception("Usuário inexistente ou senha inválida.", 1);
         }
 
         $data = $result[0];
 
-        if(password_verify($password, $data["despassword"])) {
+        if (password_verify($password, $data["despassword"])) {
             $user = new User();
-
             $user->setData($data);
 
             $_SESSION[User::SESSION] = $user->getValues();
-
             return $user;
         } else {
             throw new \Exception("Usuário inexistente ou senha inválida.", 1);
         }
     }
 
-    public static function verifyLogin($inadmin = true){
-        if(!isset($_SESSION[User::SESSION]) || !$_SESSION[User::SESSION] 
-            || !(int)$_SESSION[User::SESSION]['iduser'] > 0
-            || (bool)$_SESSION[User::SESSION]['inadmin'] !== $inadmin) {
-
+    public static function verifyLogin($inadmin = true)
+    {
+        if (!User::checkLogin($inadmin)) {
             header("Location: /admin/login");
             exit;
         } 
     }
 
-    public static function logout(){
+    public static function checkLogin($inadmin = true)
+    {   
+        if (
+            !isset($_SESSION[User::SESSION]) || 
+            !(int)$_SESSION[User::SESSION]['iduser'] > 0
+        ) {
+            return false;
+        } else {
+            if(
+                $inadmin === true && 
+                (bool)$_SESSION[User::SESSION]['inadmin']
+            ) {
+                return true;
+            } else if(!$inadmin) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public static function logout()
+    {
         session_unset();
     }
 
-    public static function listAll(){
+    public static function listAll()
+    {
         $sql = new Sql();
         return $sql->select("SELECT * FROM tb_users a 
             INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
     }
 
-    public function save(){
+    public function save()
+    {
         $sql = new Sql();
 
         $result = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword,
@@ -72,7 +93,8 @@ class User extends Model{
         $this->setData($result[0]);
     }
 
-    public function get($iduser) {
+    public function get($iduser)
+    {
         $sql = new Sql();
         $result = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b 
             USING(idperson) WHERE a.iduser = :iduser;", array(
@@ -82,8 +104,21 @@ class User extends Model{
         $this->setData($result[0]);
     }
 
+    public static function getFromSession()
+    {
+        $user = new User();
+        if(
+            isset($_SESSION[User::SESSION]) && 
+            (int)$_SESSION[User::SESSION]['iduser'] > 0
+        ) {
+            $user->setData($_SESSION[User::SESSION]);  
+        }
+
+        return $user;
+    }
     
-    public function update(){
+    public function update()
+    {
         $sql = new Sql();
 
         $result = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, 
@@ -193,5 +228,3 @@ class User extends Model{
         ));
     }   
 }
-
-?>
