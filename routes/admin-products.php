@@ -4,26 +4,25 @@ use Hcode\Model\User;
 use Hcode\PageAdmin;
 use Hcode\Model\Product;
 
-$app->get('/admin/products', function(){
+$app->get('/admin/products', function () {
     User::verifyLogin();
 
     $products = Product::listAll();
 
     $page = new PageAdmin();
     $page->setTpl("products", [
-        "products"=>$products
+        "products" => $products
     ]);
-
 });
 
-$app->get('/admin/products/create', function(){
+$app->get('/admin/products/create', function () {
     User::verifyLogin();
 
     $page = new PageAdmin();
     $page->setTpl("products-create");
 });
 
-$app->post('/admin/products/create', function(){
+$app->post('/admin/products/create', function () {
     User::verifyLogin();
 
     $product = new Product();
@@ -34,7 +33,7 @@ $app->post('/admin/products/create', function(){
     exit;
 });
 
-$app->get('/admin/products/:idproduct/delete', function($idproduct){
+$app->get('/admin/products/:idproduct/delete', function ($idproduct) {
     User::verifyLogin();
 
     $product = new Product();
@@ -45,7 +44,7 @@ $app->get('/admin/products/:idproduct/delete', function($idproduct){
     exit;
 });
 
-$app->get('/admin/products/:idproduct', function($idproduct){
+$app->get('/admin/products/:idproduct', function ($idproduct) {
     User::verifyLogin();
 
     $product = new Product();
@@ -53,12 +52,12 @@ $app->get('/admin/products/:idproduct', function($idproduct){
 
     $page = new PageAdmin();
     $page->setTpl("products-update", [
-        "product"=>$product->getValues()
+        "product"  =>  $product->getValues()
     ]);
 });
 
 
-$app->post('/admin/products/:idproduct', function($idproduct){
+$app->post('/admin/products/:idproduct', function ($idproduct) {
     User::verifyLogin();
 
     $product = new Product();

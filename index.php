@@ -1,9 +1,9 @@
-<?php 
+<?php
 
-require_once("vendor/autoload.php");
-require_once("functions.php");
+require_once "vendor/autoload.php";
+require_once "functions.php";
 
-use \Slim\Slim;
+use Slim\Slim;
 
 session_start();
 
@@ -11,9 +11,9 @@ $app = new Slim();
 $app->config('debug', true);
 
 $files = scandir("routes/");
-foreach($files as $file){
-    if(!in_array($file, array(".", ".."))) {
-        require_once("routes/$file");
+foreach ($files as $file) {
+    if (!in_array($file, array(".", ".."))) {
+        include_once "routes/$file";
     }
 }
 
