@@ -9,13 +9,15 @@ use Hcode\Model;
 class User extends Model
 {
     public const SESSION = 'User';
-    public const KEY = 'ALYbhXPbrQPMscfc';
-    public const KEY_IV = 'qAtdP3CX9q9WGykT';
+    public const ERROR = 'UserErrors';
+    private const KEY = 'ALYbhXPbrQPMscfc';
+    private const KEY_IV = 'qAtdP3CX9q9WGykT';
 
     public static function login($login, $password)
     {
         $sql = new Sql();
-        $result = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
+        $result = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b 
+        USING(idperson) WHERE deslogin = :LOGIN", array(
             ":LOGIN" => $login
         ));
 
@@ -28,6 +30,7 @@ class User extends Model
         if (password_verify($password, $data["despassword"])) {
             $user = new User();
             $user->setData($data);
+            $data['desperson'] = utf8_encode($data['desperson']);
 
             $_SESSION[User::SESSION] = $user->getValues();
             return $user;
@@ -39,7 +42,11 @@ class User extends Model
     public static function verifyLogin($inadmin = true)
     {
         if (!User::checkLogin($inadmin)) {
-            header("Location: /admin/login");
+            if ($inadmin) {
+                header("Location: /admin/login");
+            } else {
+                header("Location: /login");
+            }
             exit;
         }
     }
@@ -48,6 +55,7 @@ class User extends Model
     {
         if (
             !isset($_SESSION[User::SESSION]) ||
+            !$_SESSION[User::SESSION] ||
             !(int)$_SESSION[User::SESSION]['iduser'] > 0
         ) {
             return false;
@@ -80,9 +88,9 @@ class User extends Model
 
         $result = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword,
             :desemail, :nrphone, :inadmin);", array(
-            ":desperson" => $this->getdesperson(),
+            ":desperson" => utf8_decode($this->getdesperson()),
             ":deslogin" => $this->getdeslogin(),
-            ":despassword" => $this->getdespassword(),
+            ":despassword" => self::getPasswordHash($this->getdespassword()),
             ":desemail" => $this->getdesemail(),
             ":nrphone" => $this->getnrphone(),
             ":inadmin" => $this->getinadmin()
@@ -99,6 +107,7 @@ class User extends Model
                 ":iduser" => $iduser
         ));
 
+        $result['desperson'] = utf8_encode($result['desperson']);
         $this->setData($result[0]);
     }
 
@@ -119,9 +128,9 @@ class User extends Model
         $result = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, 
             :deslogin, :despassword, :desemail, :nrphone, :inadmin);", array(
             ":iduser" => $this->getiduser(),
-            ":desperson" => $this->getdesperson(),
+            ":desperson" => utf8_decode($this->getdesperson()),
             ":deslogin" => $this->getdeslogin(),
-            ":despassword" => $this->getdespassword(),
+            ":despassword" => self::getPasswordHash($this->getdespassword()),
             ":desemail" => $this->getdesemail(),
             ":nrphone" => $this->getnrphone(),
             ":inadmin" => $this->getinadmin()
@@ -228,5 +237,29 @@ class User extends Model
             ":despassword" => $password,
             ":iduser" => $this->getiduser()
         ));
+    }
+
+    public static function setMsgError($msg)
+    {
+        $_SESSION[User::ERROR] = $msg;
+    }
+
+    public static function getMsgError()
+    {
+        $msg = isset($_SESSION[User::ERROR]) && $_SESSION[User::ERROR] ? $_SESSION[User::ERROR] : '';
+        User::clearMsgError();
+        return $msg;
+    }
+
+    public static function clearMsgError()
+    {
+        $_SESSION[User::ERROR] = null;
+    }
+
+    public static function getPasswordHash($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT, [
+            'cost' => 12
+        ]);
     }
 }

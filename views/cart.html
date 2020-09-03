@@ -79,10 +79,11 @@
                                     
                                     <div class="coupon">
                                         <label for="cep">CEP:</label>
-                                        <input type="text" placeholder="00000-000" value={$cart.deszipcode} id="cep" class="input-text" name="zipcode">
+
+                                        <input type="text" placeholder="00000-000" {if="isset($cart.deszipcode)"} value={$cart.deszipcode} {/if} id="cep" class="input-text" name="zipcode" required>
+                                        
                                         <input type="submit" formmethod="post" formaction="/cart/freight" value="CÁLCULAR" class="button">
                                     </div>
-
                                 </div>
 
                                 <div class="cart_totals ">
