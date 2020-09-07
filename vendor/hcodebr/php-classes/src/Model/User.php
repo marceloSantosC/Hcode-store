@@ -10,6 +10,7 @@ class User extends Model
 {
     public const SESSION = 'User';
     public const ERROR = 'UserErrors';
+    public const REGISTER_ERROR = 'RegisterErrors';
     private const KEY = 'ALYbhXPbrQPMscfc';
     private const KEY_IV = 'qAtdP3CX9q9WGykT';
 
@@ -68,6 +69,16 @@ class User extends Model
                 return false;
             }
         }
+    }
+
+    public static function checkLoginExists($login)
+    {
+        $sql = new Sql();
+        $result = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", [
+            ":LOGIN" => $login
+        ]);
+
+        return (count($result) > 0);
     }
 
     public static function logout()
@@ -254,6 +265,24 @@ class User extends Model
     public static function clearMsgError()
     {
         $_SESSION[User::ERROR] = null;
+    }
+
+    public static function setRegisterMsgError($msg)
+    {
+        $_SESSION[User::REGISTER_ERROR] = $msg;
+    }
+
+    public static function getRegisterMsgError()
+    {
+        $msg = isset($_SESSION[User::REGISTER_ERROR]) && $_SESSION[User::REGISTER_ERROR] ?
+            $_SESSION[User::REGISTER_ERROR] : '';
+        User::clearRegisterMsgError();
+        return $msg;
+    }
+
+    public static function clearRegisterMsgError()
+    {
+        $_SESSION[User::REGISTER_ERROR] = null;
     }
 
     public static function getPasswordHash($password)
