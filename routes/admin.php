@@ -40,7 +40,12 @@ $app->get('/admin/forgot', function () {
 });
 
 $app->post('/admin/forgot', function () {
-    $user = User::getForgot($_POST['email']);
+    $sendSucess = User::getForgot($_POST['email']);
+    
+    if ($sendSucess) {
+        header("Location: admin/forgot/sent");
+        exit;
+    }
 });
 
 $app->get('/admin/forgot/sent', function () {

@@ -31,7 +31,7 @@
 										<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
 											<label class="" for="billing_address_1">Cep <abbr title="required" class="required">*</abbr>
 											</label>
-                                            <input type="text" value="<?php if( $cart["deszipcode"] ){ ?><?php } ?>" placeholder="00000-000" id="billing_address_1" name="zipcode" class="input-text ">
+                                            <input type="text" value="<?php echo htmlspecialchars( $cart["deszipcode"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="00000-000" id="billing_address_1" name="zipcode" class="input-text ">
                                             <input type="submit" value="Atualizar CEP" id="place_order" class="button alt" formaction="/checkout" formmethod="get">
 										</p>
 										<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">

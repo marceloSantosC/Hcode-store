@@ -160,12 +160,12 @@ class User extends Model
         ));
     }
 
-    public static function getForgot($email)
+    public static function getForgot($email, $inadmin = true)
     {
         $sql = new Sql();
         $result = $sql->select("SELECT * FROM tb_persons a INNER JOIN 
             tb_users b USING(idperson) WHERE a.desemail = :email;", array(":email" => $email));
-        
+
         if (count($result) === 0) {
             throw new \Exception("Não foi possível recuperar a senha.");
         } else {
@@ -185,7 +185,13 @@ class User extends Model
                 $dataRecovery = $resultRecovery[0]['idrecovery'];
                 $code = openssl_encrypt(base64_encode($dataRecovery), 'aes-128-ctr', User::KEY, 0, User::KEY_IV);
 
-                $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
+                if ($inadmin) {
+                    $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
+                } else {
+                    if ($inadmin) {
+                        $link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
+                    }
+                }
 
                 $mailer = new Mailer(
                     $data['desemail'],
@@ -198,12 +204,7 @@ class User extends Model
                     ]
                 );
 
-                $mailer->sendMail();
-
-                header("Location: /admin/forgot/sent");
-                exit;
-
-                return $data;
+                return $mailer->sendMail();
             }
         }
     }
