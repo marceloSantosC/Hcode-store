@@ -118,7 +118,7 @@ class User extends Model
                 ":iduser" => $iduser
         ));
 
-        $result['desperson'] = utf8_encode($result['desperson']);
+        $result[0]['desperson'] = utf8_encode($result[0]['desperson']);
         $this->setData($result[0]);
     }
 
@@ -185,12 +185,11 @@ class User extends Model
                 $dataRecovery = $resultRecovery[0]['idrecovery'];
                 $code = openssl_encrypt(base64_encode($dataRecovery), 'aes-128-ctr', User::KEY, 0, User::KEY_IV);
 
+                $link = null;
                 if ($inadmin) {
                     $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
                 } else {
-                    if ($inadmin) {
-                        $link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
-                    }
+                    $link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
                 }
 
                 $mailer = new Mailer(

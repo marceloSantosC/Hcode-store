@@ -202,10 +202,13 @@ $app->get('/forgot', function () {
 });
 
 $app->post('/forgot', function () {
-    $sendSucess = User::getForgot($_POST['email']);
+    $sendSucess = User::getForgot($_POST['email'], false);
     
     if ($sendSucess) {
         header("Location: /forgot/sent");
+        exit;
+    } else {
+        header("Location: /forgot");
         exit;
     }
 });
