@@ -11,6 +11,7 @@ class User extends Model
     public const SESSION = 'User';
     public const ERROR = 'UserErrors';
     public const REGISTER_ERROR = 'RegisterErrors';
+    public const SUCESS = 'SucessMessages';
     private const KEY = 'ALYbhXPbrQPMscfc';
     private const KEY_IV = 'qAtdP3CX9q9WGykT';
 
@@ -30,8 +31,8 @@ class User extends Model
 
         if (password_verify($password, $data["despassword"])) {
             $user = new User();
-            $user->setData($data);
             $data['desperson'] = utf8_encode($data['desperson']);
+            $user->setData($data);
 
             $_SESSION[User::SESSION] = $user->getValues();
             return $user;
@@ -84,6 +85,12 @@ class User extends Model
     public static function logout()
     {
         session_unset();
+    }
+
+    public function setData($data = [])
+    {
+        parent::setData($data);
+        $_SESSION[User::SESSION] = $this->getValues();
     }
 
     public static function listAll()
@@ -149,8 +156,7 @@ class User extends Model
 
         $this->setData($result[0]);
     }
-
-        
+  
     public function delete()
     {
         $sql = new Sql();
@@ -282,7 +288,25 @@ class User extends Model
 
     public static function clearRegisterMsgError()
     {
-        $_SESSION[User::REGISTER_ERROR] = null;
+        $_SESSION[User::SUCESS] = null;
+    }
+
+    public static function setSucess($msg)
+    {
+        $_SESSION[User::SUCESS] = $msg;
+    }
+
+    public static function getSucess()
+    {
+        $msg = isset($_SESSION[User::SUCESS]) && $_SESSION[User::SUCESS] ?
+            $_SESSION[User::SUCESS] : '';
+        User::clearSucess();
+        return $msg;
+    }
+
+    public static function clearSucess()
+    {
+        $_SESSION[User::SUCESS] = null;
     }
 
     public static function getPasswordHash($password)

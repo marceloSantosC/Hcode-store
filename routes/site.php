@@ -140,9 +140,11 @@ $app->post('/login', function () {
         User::login($_POST['login'], $_POST['password']);
     } catch (Exception $e) {
         User::setMsgError($e->getMessage());
+        header('Location: /login');
+        exit;
     }
 
-    header('Location: /cart');
+    header('Location: /profile');
     exit;
 });
 
@@ -235,10 +237,62 @@ $app->post("/forgot/reset", function () {
 
     $user = new User();
     $user->get((int)$forgot['iduser']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT, ["cost" => 12]);
-    $user->setPassword($password);
+    $password = $_POST['password'];
+    $user->setdespassword($password);
+    $user->update();
 
     $page = new Page();
 
     $page->setTpl("forgot-reset-success");
+});
+
+
+$app->get("/profile", function () {
+    User::verifyLogin(false);
+    $user = User::getFromSession();
+
+    $page = new Page();
+    $page->setTpl('profile', [
+        'user' => $user->getValues(),
+        'profileMsg' => User::getSucess(),
+        'profileError' => User::getMsgError()
+    ]);
+});
+
+$app->post("/profile", function () {
+    User::verifyLogin(false);
+
+    if (!isset($_POST['desperson']) || $_POST['desperson'] === '') {
+        User::setMsgError('Preencha seu nome.');
+        header("Location: /profile");
+        exit;
+    }
+
+    if (!isset($_POST['desemail']) || $_POST['desemail'] === '') {
+        User::setMsgError('Preencha o campo e-mail.');
+        header("Location: /profile");
+        exit;
+    }
+
+    $user = User::getFromSession();
+
+    if ($_POST['desemail'] !== $user->getdesemail()) {
+        if (User::checkLoginExists($_POST['desemail']) != $user->getdesemail()) {
+            User::setMsgError('Este endereço de e-mail já está cadastrado.');
+            header("Location: /profile");
+            exit;
+        }
+    }
+
+    $_POST['inadmin'] = $user->getinadmin();
+    $_POST['despassword'] = $user->getdespassword();
+    $_POST['deslogin'] = $_POST['desemail'];
+
+    $user->setData($_POST);
+    $user->update();
+
+    User::setSucess('Dados alterados com sucesso!');
+    
+    header("Location: /profile");
+    exit;
 });
