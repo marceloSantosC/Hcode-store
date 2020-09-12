@@ -192,9 +192,14 @@ class Cart extends Model
                 'nVlValorDeclarado' => $totals['vlprice'],
                 'sCdAvisoRecebimento' => 'S',
             ]);
-            $xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?$qs");
 
-
+            try {
+                $xml = simplexml_load_file("http://ws.correios.com.br/calculador" .
+                    "/CalcPrecoPrazo.asmx/CalcPrecoPrazo?$qs");
+            } catch (\Exception $e) {
+                Cart::setMsgError($e->getMessage());
+            }
+            
             $result = $xml->Servicos->cServico;
 
             if ($result->MsgErro != '') {

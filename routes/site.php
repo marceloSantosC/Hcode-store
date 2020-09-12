@@ -112,14 +112,107 @@ $app->post('/cart/freight', function () {
 $app->get('/checkout', function () {
     User::verifyLogin(false);
 
-    $cart = Cart::getFromSession();
     $address = new Address();
+    $cart = Cart::getFromSession();
+
+    if (!isset($_GET['zipcode'])) {
+        $_GET['zipcode'] = $cart->getdeszipcode();
+    }
+
+    if (isset($_GET['zipcode'])) {
+        $address->loadFromCEP($_GET['zipcode']);
+
+        $cart->setdeszipcode($_GET['zipcode']);
+        $cart->save();
+        $cart->calculateTotal();
+    }
+
+    $fields = [
+        'idaddress' => '',
+        'idperson' => '',
+        'desaddress' => '',
+        'descomplement' => '',
+        'descity' => '',
+        'desstate' => '',
+        'descountry' => '',
+        'desnrzipcode' => '',
+        'desdistrict' => ''
+    ];
+
+    $address->setData(array_merge($fields, $address->getValues()));
 
     $page = new Page();
     $page->setTpl('checkout', [
         'cart' => $cart->getValues(),
-        'address' => $address->getValues()
+        'address' => $address->getValues(),
+        'products' => $cart->getProducts(),
+        'error' => $address::getMsgError()
     ]);
+});
+
+$app->post('/checkout', function () {
+    User::verifyLogin(false);
+
+    if (isset($_POST['zipcode']) && $_POST['zipcode'] === '') {
+        Address::setMsgError('O campo CEP deve ser preenchido.');
+
+        header('Location: /checkout');
+        exit;
+    }
+
+    
+    if (isset($_POST['desaddress']) && $_POST['desaddress'] === '') {
+        Address::setMsgError('O campo endereço deve ser preenchido.');
+
+        header('Location: /checkout');
+        exit;
+    }
+
+    if (isset($_POST['desdistrict']) && $_POST['desdistrict'] === '') {
+        Address::setMsgError('O campo bairro deve ser preenchido.');
+
+        header('Location: /checkout');
+        exit;
+    }
+
+    if (isset($_POST['desdistrict']) && $_POST['desdistrict'] === '') {
+        Address::setMsgError('O campo bairro deve ser preenchido.');
+
+        header('Location: /checkout');
+        exit;
+    }
+
+    if (isset($_POST['descity']) && $_POST['descity'] === '') {
+        Address::setMsgError('O campo cidade deve ser preenchido.');
+
+        header('Location: /checkout');
+        exit;
+    }
+    
+    if (isset($_POST['desstate']) && $_POST['desstate'] === '') {
+        Address::setMsgError('O campo estado deve ser preenchido.');
+
+        header('Location: /checkout');
+        exit;
+    }
+
+    if (isset($_POST['descountry']) && $_POST['descountry'] === '') {
+        Address::setMsgError('O campo pais deve ser preenchido.');
+
+        header('Location: /checkout');
+        exit;
+    }
+
+    $user = User::getFromSession();
+
+    $address = new Address();
+    $_POST['deszipcode'] = $_POST['zipcode'];
+    $_POST['idperson'] = $user->getidperson();
+    $address->setData($_POST);
+    $address->save();
+
+    header('Location: /order');
+    exit;
 });
 
 $app->get('/login', function () {
