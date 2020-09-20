@@ -7,30 +7,30 @@ namespace Composer\Autoload;
 class ComposerStaticInitad7390e60652c98662cdbcaa6ed0f0cb
 {
     public static $prefixLengthsPsr4 = array (
-        'H' => 
+        'H' =>
         array (
             'Hcode\\' => 6,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Hcode\\' => 
+        'Hcode\\' =>
         array (
             0 => __DIR__ . '/..' . '/hcodebr/php-classes/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'S' => 
+        'S' =>
         array (
-            'Slim' => 
+            'Slim' =>
             array (
                 0 => __DIR__ . '/..' . '/slim/slim',
             ),
         ),
-        'R' => 
+        'R' =>
         array (
-            'Rain' => 
+            'Rain' =>
             array (
                 0 => __DIR__ . '/..' . '/rain/raintpl/library',
             ),
@@ -55,7 +55,6 @@ class ComposerStaticInitad7390e60652c98662cdbcaa6ed0f0cb
             $loader->prefixDirsPsr4 = ComposerStaticInitad7390e60652c98662cdbcaa6ed0f0cb::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitad7390e60652c98662cdbcaa6ed0f0cb::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitad7390e60652c98662cdbcaa6ed0f0cb::$classMap;
-
         }, null, ClassLoader::class);
     }
 }
