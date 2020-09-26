@@ -426,7 +426,7 @@ $app->get('/boleto/:idorder', function ($idorder) {
     $dias_de_prazo_para_pagamento = 10;
     $taxa_boleto = 5.00;
     $data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));
-    $valor_cobrado = formatPrice($order->getvltotal());
+    $valor_cobrado = $order->getvltotal();
     $valor_cobrado = str_replace(",", ".", $valor_cobrado);
     $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
 
@@ -482,4 +482,33 @@ $app->get('/boleto/:idorder', function ($idorder) {
         DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR;
     require_once($path . 'funcoes_itau.php');
     require_once($path . 'layout_itau.php');
+});
+
+$app->get('/profile/orders', function () {
+    User::verifyLogin(false);
+
+    $user = User::getFromSession();
+
+    $page = new Page();
+    $page->setTpl('profile-orders', [
+        'orders' => $user->getOrders()
+    ]);
+});
+
+$app->get('/profile/orders/:idorder', function ($idorder) {
+    User::verifyLogin(false);
+
+    $order = new Order();
+    $order->get((int)$idorder);
+
+    $cart = new Cart();
+    $cart->get((int)$order->getidcart());
+    $cart->calculateTotal();
+
+    $page = new Page();
+    $page->setTpl('profile-orders-detail', [
+        'order' => $order->getValues(),
+        'cart' => $cart->getValues(),
+        'products' => $cart->getProducts()
+    ]);
 });
