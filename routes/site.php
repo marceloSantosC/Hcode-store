@@ -512,3 +512,62 @@ $app->get('/profile/orders/:idorder', function ($idorder) {
         'products' => $cart->getProducts()
     ]);
 });
+
+$app->get('/profile/change-password', function () {
+    User::verifyLogin(false);
+
+    $page = new Page();
+    $page->setTpl('profile-change-password', [
+        'changePassError' => User::getMsgError(),
+        'changePassSuccess' => User::getSucess()
+    ]);
+});
+
+$app->post('/profile/change-password', function () {
+    User::verifyLogin(false);
+
+    if (!isset($_POST['current_pass']) || $_POST['current_pass'] === '') {
+        User::setMsgError('Digite a senha atual.');
+        header('Location: /profile/change-password');
+        exit;
+    }
+
+    if (!isset($_POST['new_pass']) || $_POST['new_pass'] === '') {
+        User::setMsgError('Digite a nova senha.');
+        header('Location: /profile/change-password');
+        exit;
+    }
+
+    if (!isset($_POST['new_pass_confirm']) || $_POST['new_pass_confirm'] === '') {
+        User::setMsgError('Confirme a nova senha.');
+        header('Location: /profile/change-password');
+        exit;
+    }
+
+    if ($_POST['current_pass'] === $_POST['new_pass']) {
+        User::setMsgError('A nova senha deve ser diferente da antiga.');
+        header('Location: /profile/change-password');
+        exit;
+    }
+
+    if ($_POST['new_pass_confirm'] === $_POST['current_pass']) {
+        User::setMsgError('A nova senha não coincide com a confirmação.');
+        header('Location: /profile/change-password');
+        exit;
+    }
+
+    $user = User::getFromSession();
+
+    if (!password_verify($_POST['current_pass'], $user->getdespassword())) {
+        User::setMsgError('A senha atual está incorreta.');
+        header('Location: /profile/change-password');
+        exit;
+    }
+
+    $user->setdespassword($_POST['new_pass']);
+    $user->update();
+
+    User::setSucess('Senha alterada com sucesso');
+    header('Location: /profile/change-password');
+    exit;
+});
