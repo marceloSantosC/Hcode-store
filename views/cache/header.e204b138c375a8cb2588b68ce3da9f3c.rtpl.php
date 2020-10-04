@@ -53,29 +53,6 @@
                         </ul>
                     </div>
                 </div>
-                
-                <div class="col-md-4">
-                    <div class="header-right">
-                        <ul class="list-unstyled list-inline">
-                            <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">moeda :</span><span class="value">BRL </span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">BRL</a></li>
-                                    <li><a href="#">USD</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">linguagem :</span><span class="value">Português </span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Português</a></li>
-                                    <li><a href="#">Inglês</a></li>
-                                    <li><a href="#">Espanhol</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div> <!-- End header area -->
@@ -110,7 +87,7 @@
                         <span class="icon-bar"></span>
                     </button>
                 </div> 
-                <div class="navbar-collapse collapse">
+                <div class="navbar-collapse collapse" id="nav">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/">Home</a></li>
                         <li><a href="/products">Produtos</a></li>

@@ -11,37 +11,12 @@ $app->get('/admin/orders/:idorder/status', function ($idorder) {
     $order = new Order();
     $order->get((int)$idorder);
 
-    $search = isset($_GET['search']) ? $_GET['search'] : '';
-    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-    if ($search != '') {
-        $pagination = Order::getPagesUsingSearch($search, $currentPage);
-    } else {
-        $pagination = Order::getPages($currentPage);
-    }
-
-    $pages = [];
-    for ($i = 0; $i < $pagination['pages']; $i++) {
-        array_push($pages, [
-            'href' => '/admin/users?' . http_build_query([
-                'page' => $i + 1,
-                'search' => $search
-            ]),
-            'text' => $i + 1
-        ]);
-    }
-
-    var_dump($search);
-    exit;
-
     $page = new PageAdmin();
     $page->setTpl('order-status', [
-        'order' => $pagination['data'],
+        'order' => $order->getValues(),
         'status' => OrderStatus::listAll(),
         'msgSuccess' => Order::getSucess(),
-        'msgError' => Order::getmsgError(),
-        'search' => $search,
-        'pages' => $pages
+        'msgError' => Order::getmsgError()
     ]);
 });
 
@@ -96,9 +71,31 @@ $app->get('/admin/orders/:idorder', function ($idorder) {
 
 $app->get('/admin/orders', function () {
     User::verifyLogin();
+
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+    if ($search != '') {
+        $pagination = Order::getPagesUsingSearch($search, $currentPage);
+    } else {
+        $pagination = Order::getPages($currentPage);
+    }
+
+    $pages = [];
+    for ($i = 0; $i < $pagination['pages']; $i++) {
+        array_push($pages, [
+            'href' => '/admin/orders?' . http_build_query([
+                'page' => $i + 1,
+                'search' => $search
+            ]),
+            'text' => $i + 1
+        ]);
+    }
     
     $page = new PageAdmin();
     $page->setTpl('orders', [
-        'orders' => Order::listAll()
+        'orders' => $pagination['data'],
+        'search' => $search,
+        'pages' => $pages
     ]);
 });

@@ -128,7 +128,8 @@ class Order extends Model
                 JOIN tb_carts c USING(idcart)
                 JOIN tb_users d ON d.iduser = a.iduser
                 JOIN tb_addresses e USING(idaddress)
-                JOIN tb_persons f ON f.idperson = d.idperson;
+                JOIN tb_persons f ON f.idperson = d.idperson
+            ORDER BY a.dtregister DESC
             LIMIT $start, $itemsPerPage;"
         );
 
@@ -148,12 +149,19 @@ class Order extends Model
         $sql = new Sql();
         $result = $sql->select(
             "SELECT SQL_CALC_FOUND_ROWS *
-            FROM tb_users a 
-            INNER JOIN tb_persons b USING(idperson)
-            WHERE b.desperson LIKE :search OR b.desemail = :search OR a.deslogin LIKE :search
-            ORDER BY b.desperson
+             FROM tb_orders a
+                INNER JOIN tb_ordersstatus b USING(idstatus)
+                INNER JOIN tb_carts c USING(idcart)
+                INNER JOIN tb_users d ON d.iduser = a.iduser
+                INNER JOIN tb_addresses e USING(idaddress)
+                INNER JOIN tb_persons f ON f.idperson = d.idperson
+            WHERE a.idorder = :id OR f.desperson LIKE :search
+            ORDER BY a.dtregister DESC
             LIMIT $start, $itemsPerPage;",
-            [':search' => $search]
+            [
+                ':search' => "%$search%",
+                ':id' => $search
+            ]
         );
 
         $totalItems = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
