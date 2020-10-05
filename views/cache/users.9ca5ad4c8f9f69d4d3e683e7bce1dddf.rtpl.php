@@ -41,7 +41,7 @@
                     <th>E-mail</th>
                     <th>Login</th>
                     <th style="width: 60px">Admin</th>
-                    <th style="width: 140px">&nbsp;</th>
+                    <th style="width: 240px">&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -53,6 +53,7 @@
                     <td><?php echo htmlspecialchars( $value1["deslogin"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td/>
                     <td><?php if( $value1["inadmin"] == 1 ){ ?>Sim<?php }else{ ?>Não<?php } ?></td>
                     <td>
+                      <a href="/admin/users/<?php echo htmlspecialchars( $value1["iduser"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/password" class="btn btn-primary btn-xs"><i class="fa fa-lock"></i> Alterar senha</a>
                       <a href="/admin/users/<?php echo htmlspecialchars( $value1["iduser"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Editar</a>
                       <a href="/admin/users/<?php echo htmlspecialchars( $value1["iduser"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Excluir</a>
                     </td>

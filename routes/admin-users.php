@@ -58,9 +58,54 @@ $app->get('/admin/users/:iduser/delete', function ($iduser) {
     User::verifyLogin();
 
     $user = new User();
-    $user->get((int)$iduser);
+    $user->get((int)$iduser, false);
     $user->delete();
 
+    header("Location: /admin/users");
+    exit;
+});
+
+$app->get('/admin/users/:iduser/password', function ($iduser) {
+    User::verifyLogin();
+
+    $user = new User();
+    $user->get((int)$iduser);
+
+    
+    $page = new PageAdmin();
+    $page->setTpl('users-password', array(
+        "user" => $user->getValues(),
+        'msgError' => User::getMsgError(),
+        'msgSuccess' => User::getSucess()
+    ));
+});
+
+$app->post('/admin/users/:iduser/password', function ($iduser) {
+    User::verifyLogin();
+
+    if (!isset($_POST['despassword']) || $_POST['despassword'] === '') {
+        User::setMsgError('Preencha o campo senha.');
+        header("Location: /admin/users/$iduser/password");
+        exit;
+    }
+
+    if (!isset($_POST['despassword-confirm']) || $_POST['despassword-confirm'] === '') {
+        User::setMsgError('Confirme a senha.');
+        header("Location: /admin/users/$iduser/password");
+        exit;
+    }
+
+    if ($_POST['despassword-confirm'] !== $_POST['despassword']) {
+        User::setMsgError('As senhas são diferentes');
+        header("Location: /admin/users/$iduser/password");
+        exit;
+    }
+
+    $user = new User();
+    $user->get((int)$iduser, false);
+    $user->setPassword(User::getPasswordHash($_POST['despassword']));
+
+    User::setSucess('Senha alterada com sucesso!');
     header("Location: /admin/users");
     exit;
 });
@@ -69,7 +114,6 @@ $app->get('/admin/users/:iduser', function ($iduser) {
     User::verifyLogin();
 
     $user = new User();
-
     $user->get((int)$iduser);
 
     $page = new PageAdmin();

@@ -87,10 +87,12 @@ class User extends Model
         session_unset();
     }
 
-    public function setData($data = [])
+    public function setData($data = [], $storeInSession = true)
     {
         parent::setData($data);
-        $_SESSION[User::SESSION] = $this->getValues();
+        if ($storeInSession) {
+            $_SESSION[User::SESSION] = $this->getValues();
+        }
     }
 
     public static function listAll()
@@ -117,7 +119,7 @@ class User extends Model
         $this->setData($result[0]);
     }
 
-    public function get($iduser)
+    public function get($iduser, $storeInSession = true)
     {
         $sql = new Sql();
         $result = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b 
@@ -125,8 +127,7 @@ class User extends Model
                 ":iduser" => $iduser
         ));
 
-        $result[0]['desperson'] = $result[0]['desperson'];
-        $this->setData($result[0]);
+        $this->setData($result[0], $storeInSession);
     }
 
     public static function getFromSession()
