@@ -2,7 +2,7 @@
 ## Descrição 📋
 Projeto de um e-commerce de dispositivos móveis criado durante as aulas do curso 'Curso de PHP 7' com o objetivo de aplicar os conhecimentos obtidos em PHP, SLIM, RainTPL, PDO e outros assuntos abordados.
 ## Objetivo do projeto 🏃
-Entender como a criação de um site com PHP funciona na prática.
+Entender como a criação do backend de um site com PHP funciona na prática e aplicar conhecimentos do curso.
 ## Status ❗
 :white_check_mark: Concluído
 ## Tecnologias Usadas
