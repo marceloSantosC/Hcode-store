@@ -20,7 +20,7 @@
                     <ul>
                         <li><a href="/profile">Minha Conta</a></li>
                         <li><a href="/profile/orders">Meus Pedidos</a></li>
-                        <li><a href="#">Lista de Desejos</a></li>
+                        <li><a href="/">Lista de Desejos</a></li>
                     </ul>                        
                 </div>
             </div>

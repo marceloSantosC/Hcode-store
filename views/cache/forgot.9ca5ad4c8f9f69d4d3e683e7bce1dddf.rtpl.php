@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Log in</title>
+  <title>AdminLTE 2 | Lockscreen</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -14,8 +14,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/res/admin/dist/css/AdminLTE.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="/res/admin/plugins/iCheck/square/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,56 +22,46 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
+<body class="hold-transition lockscreen">
+<!-- Automatic element centering -->
+<div class="lockscreen-wrapper">
+  <div class="lockscreen-logo">
     <a href="/res/admin/index2.html"><b>Admin</b>LTE</a>
   </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Entre para inciar a sessão.</p>
 
-    <form action="/admin/login" method="post">
-      <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="Username" name="login">
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password" name="password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        <div class="col-xs-8">
+  <!-- START LOCK SCREEN ITEM -->
+  <div class="lockscreen-item">
+
+    <!-- lockscreen credentials (contains the form) -->
+    <form  action="/admin/forgot" method="post">
+      <div class="input-group">
+        <input type="email" class="form-control" placeholder="Digite o e-mail" name="email">
+
+        <div class="input-group-btn">
+          <button type="submit" class="btn"><i class="fa fa-arrow-right text-muted"></i></button>
         </div>
-        <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
-        </div>
-        <!-- /.col -->
       </div>
     </form>
-
-    <a href="/admin/forgot">Esqueci minha senha</a><br>
+    <!-- /.lockscreen credentials -->
 
   </div>
-  <!-- /.login-box-body -->
+  <!-- /.lockscreen-item -->
+  <div class="help-block text-center">
+    Digite seu e-mail e receba as instruções para redefinir a sua senha.
+  </div>
+  <div class="text-center">
+    <a href="/admin/login">Ou entre usando outro usuário</a>
+  </div>
+  <div class="lockscreen-footer text-center">
+    Copyright &copy; 2014-2016 <b><a href="http://almsaeedstudio.com" class="text-black">Almsaeed Studio</a></b><br>
+    All rights reserved
+  </div>
 </div>
-<!-- /.login-box -->
+<!-- /.center -->
 
 <!-- jQuery 2.2.3 -->
 <script src="/res/admin/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/res/admin/bootstrap/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="/res/admin/plugins/iCheck/icheck.min.js"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
-</script>
 </body>
 </html>
