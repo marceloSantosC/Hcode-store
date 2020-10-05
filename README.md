@@ -1,7 +1,9 @@
 # Projeto e-commerce 
-## Descrição
+## Descrição 📋
 Projeto de um e-commerce de dispositivos móveis criado durante as aulas do curso 'Curso de PHP 7' com o objetivo de aplicar os conhecimentos obtidos em PHP, SLIM, RainTPL, PDO e outros assuntos abordados.
-## Status
+## Objetivo do projeto 🏃
+Entender como a criação de um site com PHP funciona na prática.
+## Status ❗
 :white_check_mark: Concluído
 ## Tecnologias Usadas
  :heavy_check_mark: PHP7
@@ -16,8 +18,12 @@ Projeto de um e-commerce de dispositivos móveis criado durante as aulas do curs
   - [x] Recuperação de senhas
   - [x] Módulo de administrador onde é possível ver e alterar usuários, pedidos, produtos e categorias
   
-  ## Como usar
-  ### Usando o projeto
+  ## Como usar :bookmark_tabs:
+  ### Requisitos para instalação
+  :heavy_check_mark: PHP7 instalado globalmente [tutorial](https://webdevbr.com.br/fazendo-o-php-funcionar-no-console-cmd-do-windows-instalando-o-composer-e-o-git)
+     
+  :heavy_check_mark: Uma instância de MySql
+  ### Usando o projeto 
   1. Baixe o projeto
   2. Abra a pasta do projeto com um programa de linha de comando (cmd)
   3. Digite php -S localhost:8000 para iniciar o servidor embutido do PHP
@@ -25,11 +31,8 @@ Projeto de um e-commerce de dispositivos móveis criado durante as aulas do curs
   5. Execute o script mysql no arquivo db_ecommerce-dump.sql
   6. Para entrar no modo administrador vá até o endereço  http://localhost:8000/admin e digite o login admin e a senha 1234
   7. Para usar o 'esqueci minha senha' vá em vendor/hcodebr/php-classes/src, abra o arquivo Mailer.php e adicione um e-mail do gmail a constante USERNAME e a senha do e-mail na constante PASSWORD
-  ### Requisitos 
-   :heavy_check_mark: PHP7 instalado globalmente [tutorial](https://webdevbr.com.br/fazendo-o-php-funcionar-no-console-cmd-do-windows-instalando-o-composer-e-o-git)
-   
-   :heavy_check_mark: Uma instância de MySql
-## Screenshots
+
+## Screenshots :camera:
 ### Módulo Admin
 ![Página admin](screenshots/admin.png)
 ### Módulo usuário
