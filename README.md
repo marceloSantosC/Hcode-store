@@ -26,10 +26,21 @@ Projeto de um e-commerce de dispositivos móveis criado durante as aulas do curs
   6. Para entrar no modo administrador vá até o endereço  http://localhost:8000/admin e digite o login admin e a senha 1234
   7. Para usar o 'esqueci minha senha' vá em vendor/hcodebr/php-classes/src, abra o arquivo Mailer.php e adicione um e-mail do gmail a constante USERNAME e a senha do e-mail na constante PASSWORD
   ### Requisitos 
-   :heavy_check_mark: PHP7 instalado globalmente [tutorial] (https://webdevbr.com.br/fazendo-o-php-funcionar-no-console-cmd-do-windows-instalando-o-composer-e-o-git)
+   :heavy_check_mark: PHP7 instalado globalmente [tutorial](https://webdevbr.com.br/fazendo-o-php-funcionar-no-console-cmd-do-windows-instalando-o-composer-e-o-git)
    
    :heavy_check_mark: Uma instância de MySql
-
+## Screenshots
+### Módulo Admin
+![Página admin](screenshots/admin.png)
+### Módulo usuário
+![Homepage](screenshots/homepage.png)
+### Carrinho de compras
+![Carrinho de compras](screenshots/carrinho.png)
+### Boleto
+![Boleto](screenshots/boleto.png)
+### Produtos
+![Produtos](screenshots/produts.png)
+## Informações adicionais
 Projeto desenvolvido do zero no [Curso de PHP 7](https://www.udemy.com/curso-completo-de-php-7/) disponível na plataforma da Udemy e no site do [HTML5dev.com.br](https://www.html5dev.com.br/curso/curso-completo-de-php-7).
 
 Template usado no projeto [Almsaeed Studio](https://almsaeedstudio.com)
